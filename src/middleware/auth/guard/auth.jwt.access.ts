@@ -11,7 +11,6 @@ export class JWTAccessGuard extends AuthGuard('access') {
     handleRequest<TUser = any>(err: any, user: any, info: any, context: ExecutionContext, status?: any): TUser {
         if (info instanceof TokenExpiredError) {
             throw new UnauthorizedException('Access permission has expired.');
-            // 여기서 재발급하고
         } else if (info instanceof JsonWebTokenError) {
             throw new UnauthorizedException('Invalid authentication.');
         } else if (info instanceof NotBeforeError) {
