@@ -6,9 +6,15 @@ import { Redis } from 'ioredis';
 export class RedisService {
     constructor(@InjectRedis() private readonly redis: Redis) {}
 
-    async findTokenByEmail() {
-        await this.redis.get('k1');
-        await this.redis.set('k2', 'v2');
-        await this.redis.del('k1');
+    async getRedis(key: string) {
+        return await this.redis.get(key);
+    }
+
+    async setRedis(key: string, value: string) {
+        await this.redis.set(key, value);
+    }
+
+    async deleteRedis(key: string) {
+        await this.redis.del(key);
     }
 }

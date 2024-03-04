@@ -13,7 +13,7 @@ import { JWTAccessGuard } from 'src/middleware/auth/guard/auth.jwt.access';
 export class UserController {
     constructor(private readonly userService: UserService) {}
 
-    /** 
+    /**
      * SignUpUserDTO 클래스를 파라미터로 받아 회원가입을 처리하는 컨트롤러 라우터로 사용하도록 한다.
      * @author SJ
      * @param { SignUpUserDTO } signUpUserDTO
@@ -61,21 +61,13 @@ export class UserController {
     @UseGuards(JwtRefreshGuard)
     @Post('/refresh')
     async refresh(@Req() req: Request, @Res({ passthrough: true }) res: Response) {
-        const refreshToken = req.cookies['refreshToken'];
-        const accessToken = await this.userService.generateUserAccessToken(refreshToken);
+        const tokens = await this.userService.reissueToken(req.cookies['refreshToken']);
 
-        res.cookie('accessToken', accessToken, { httpOnly: true, sameSite: 'none' });
+        res.cookie('accessToken', tokens['accessToken'], { httpOnly: true, sameSite: 'none' });
+        res.cookie('refreshToken', tokens['refreshToken'], { httpOnly: true, sameSite: 'none' });
+
         return { message: 'Token reissue has been completed successfully.' };
     }
-
-    /**
-     * @TODO 레디스 붙이는거 ㅇㅇ
-     * 로그인을 함 -> 리프레시, 액세스 발급해서 리프레시 레디스에 박음
-     * 액세스 만료 -> 쿠키에서 리프레시 가져옴 -> 가져온 리프레시랑 레디스 리프레시랑 비교 
-     *         -> 맞으면 액세스, 리프레시 다시발급 둘다 쿠키에 넣은 후 리프레시 레디스 다시 박은 후 액세스 전송
-     *         -> 틀리면 레디스에 해당 값 비우고 에러 throw
-     * 리프레시 만료 -> 다시 로그인하세요 띄우기
-     */
 
     /**
      * 테스트용임 아래는

@@ -17,8 +17,6 @@ export class JWTAccessGuard extends AuthGuard('access') {
             throw new UnauthorizedException('There is a problem with authentication.');
         }
 
-        console.log(user);
-
         return super.handleRequest(err, user, info, context, status);
     }
 }

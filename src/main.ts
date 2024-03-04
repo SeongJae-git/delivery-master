@@ -5,7 +5,7 @@ import * as cookieParser from 'cookie-parser';
 import * as Sentry from '@sentry/node';
 
 import { setupSwagger } from './config/swagger';
-import { ErrorAlertInterceptor } from './middleware/interceptor/error.alert.interceptor'
+import { ErrorAlertInterceptor } from './middleware/interceptor/error.alert.interceptor';
 
 async function bootstrap() {
     const app = await NestFactory.create(AppModule);
