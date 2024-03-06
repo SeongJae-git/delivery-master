@@ -7,12 +7,10 @@ import { JwtAccessStrategy } from 'src/middleware/auth/strategy/auth.access.stra
 import { JwtRefreshStrategy } from 'src/middleware/auth/strategy/auth.refresh.strategy';
 import { UserRepository } from 'src/domain/user/repository/user.repository';
 import { AuthService } from 'src/middleware/auth/service/auth.service';
-import { JwtStrategy } from 'src/middleware/auth/strategy/auth.jwt.strategy';
 
 @Module({
     imports: [PassportModule, JwtModule, TypeOrmModule.forFeature([UserEntity])],
-    controllers: [],
-    providers: [AuthService, JwtAccessStrategy, JwtRefreshStrategy, UserRepository, JwtStrategy],
-    exports: [AuthService, JwtAccessStrategy, JwtRefreshStrategy, JwtStrategy]
+    providers: [AuthService, JwtAccessStrategy, JwtRefreshStrategy, UserRepository],
+    exports: [AuthService]
 })
 export class AuthModule {}

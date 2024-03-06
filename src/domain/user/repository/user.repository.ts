@@ -36,4 +36,8 @@ export class UserRepository {
             }
         });
     }
+
+    async updateUser() {}
+
+    async deleteUser() {}
 }

@@ -5,17 +5,17 @@ export class OrderEntity {
     @PrimaryGeneratedColumn()
     order_no: number;
 
-    @Column()
+    @Column({ unique: true })
     order_uuid: string;
 
     @Column()
     order_time: string;
 
     @Column()
-    receipt_time: string;
+    order_status: string;
 
-    @Column({ default: 'requesting' })
-    receipt_status: string;
+    @Column()
+    receipt_time: string;
 
     @Column()
     product_no: number;

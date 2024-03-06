@@ -63,8 +63,8 @@ export class UserController {
         AccessToken이 만료되었을 때 Redis서버의 RefreshToken과 비교하여 유효성 검증을 하고 새 AccessToken을 재발급하여 
         쿠키의 정보를 업데이트합니다.`
     })
-    @ApiResponse({ status: 201, description: '성공적으로 토큰 재발급이 완료되어 쿠키가 교체되었습니다.' })
-    @ApiResponse({ status: 401, description: '모든 토큰이 만료되었습니다. 재로그인이 필요합니다.' })
+    @ApiResponse({ status: 201, description: '성공적으로 인증 토큰 재발급이 완료되어 쿠키가 교체되었습니다.' })
+    @ApiResponse({ status: 401, description: '모든 인증 토큰이 만료되었습니다. 재로그인이 필요합니다.' })
     @UseGuards(JwtRefreshGuard)
     @Post('/refresh')
     async refresh(@Req() req: Request, @Res({ passthrough: true }) res: Response) {
