@@ -13,29 +13,27 @@ export class UserRepository {
     ) {}
 
     async insertUser(signUpUserDTO: SignUpUserDTO): Promise<void> {
-        await this.userRepository.insert(signUpUserDTO);
+        this.userRepository.insert(signUpUserDTO);
     }
 
     async findUserByUserNo(user_no: number) {
-        return await this.userRepository.findOne({
+        return this.userRepository.findOne({
             where: { user_no: user_no }
         });
     }
 
     async findUserByEmail(email: string) {
-        return await this.userRepository.findOne({
+        return this.userRepository.findOne({
             where: { email: email }
         });
     }
 
     async findUserByLogin(signInUserDTO: SignInUserDTO) {
-        const user = await this.userRepository.findOne({
+        return this.userRepository.findOne({
             where: {
                 email: signInUserDTO.email,
                 password: signInUserDTO.password
             }
         });
-
-        return user;
     }
 }

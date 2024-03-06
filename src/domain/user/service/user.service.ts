@@ -2,19 +2,21 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { SignUpUserDTO } from '../dto/signup.user.dto';
 import { SignInUserDTO } from '../dto/signin.user.dto';
 import { UserRepository } from '../repository/user.repository';
-import { JwtService } from '@nestjs/jwt';
 import { RedisService } from 'src/middleware/redis/redis.service';
+import { AuthService } from 'src/middleware/auth/service/auth.service';
 
 @Injectable()
 export class UserService {
     constructor(
         private readonly userRepository: UserRepository,
-        private readonly jwtService: JwtService,
+        private readonly authService: AuthService,
         private readonly redisService: RedisService
     ) {}
 
     async signUpUser(signUpUserDTO: SignUpUserDTO) {
-        if (!(await this.userRepository.findUserByEmail(signUpUserDTO.email))) {
+        const user = await this.userRepository.findUserByEmail(signUpUserDTO.email);
+
+        if (!user) {
             await this.userRepository.insertUser(signUpUserDTO);
         } else {
             throw new UnauthorizedException(`${signUpUserDTO.email} is already exist.`);
@@ -24,37 +26,28 @@ export class UserService {
     async signInUser(signInUserDTO: SignInUserDTO) {
         const user = await this.userRepository.findUserByLogin(signInUserDTO);
 
-        if (user) {
-            const accessToken = await this.jwtService.signAsync(
-                { email: user.email },
-                {
-                    secret: process.env.AUTH_ACCESS_KEY,
-                    expiresIn: process.env.AUTH_ACCESS_EXPIRATION_TIME
-                }
-            );
-            const refreshToken = await this.jwtService.signAsync(
-                { user_no: user.user_no, email: user.email },
-                {
-                    secret: process.env.AUTH_REFRESH_KEY,
-                    expiresIn: process.env.AUTH_REFRESH_EXPIRATION_TIME
-                }
-            );
-
-            this.redisService.setRedis(user.user_no.toString(), refreshToken);
-
-            return {
-                email: user.email,
-                name: user.name,
-                accessToken: accessToken,
-                refreshToken: refreshToken
-            };
-        } else {
+        if (!user) {
             throw new UnauthorizedException(`Account doesn't exist.`);
         }
+
+        const accessToken = await this.authService.generateAccessToken({ email: user.email });
+        const refreshToken = await this.authService.generateRefreshToken({
+            user_no: user.user_no,
+            email: user.email
+        });
+
+        this.redisService.setRedis(user.user_no.toString(), refreshToken, process.env.AUTH_REFRESH_EXPIRATION_TIME);
+
+        return {
+            email: user.email,
+            name: user.name,
+            accessToken: accessToken,
+            refreshToken: refreshToken
+        };
     }
 
     async reissueToken(refreshToken: string) {
-        const payload = await this.jwtService.verifyAsync(refreshToken, { secret: process.env.AUTH_REFRESH_KEY });
+        const payload = await this.authService.verifyRefreshToken(refreshToken);
         const redisRefreshToken = await this.redisService.getRedis(payload.user_no);
 
         if (!redisRefreshToken || refreshToken !== redisRefreshToken) {
@@ -62,22 +55,13 @@ export class UserService {
             throw new UnauthorizedException('Invalid authentication. Please log in again.');
         }
 
-        const newAccessToken = await this.jwtService.signAsync(
-            { email: payload.email },
-            {
-                secret: process.env.AUTH_ACCESS_KEY,
-                expiresIn: process.env.AUTH_ACCESS_EXPIRATION_TIME
-            }
-        );
-        const newRefreshToken = await this.jwtService.signAsync(
-            { user_no: payload.user_no, email: payload.email },
-            {
-                secret: process.env.AUTH_REFRESH_KEY,
-                expiresIn: process.env.AUTH_REFRESH_EXPIRATION_TIME
-            }
-        );
+        const newAccessToken = await this.authService.generateAccessToken({ email: payload.email });
+        const newRefreshToken = await this.authService.generateRefreshToken({
+            user_no: payload.user_no,
+            email: payload.email
+        });
 
-        this.redisService.setRedis(payload.user_no, newRefreshToken);
+        this.redisService.setRedis(payload.user_no, newRefreshToken, process.env.AUTH_REFRESH_EXPIRATION_TIME);
 
         return {
             accessToken: newAccessToken,

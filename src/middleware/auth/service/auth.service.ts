@@ -1,15 +1,39 @@
+import { Injectable } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
+
+@Injectable()
 export class AuthService {
-    constructor() {}
+    constructor(private readonly jwtService: JwtService) {}
 
-    async generateAccessToken(): Promise<string> {}
+    async generateAccessToken(payload: { email: string }): Promise<string> {
+        return this.jwtService.signAsync(
+            { email: payload.email },
+            {
+                secret: process.env.AUTH_ACCESS_KEY,
+                expiresIn: process.env.AUTH_ACCESS_EXPIRATION_TIME
+            }
+        );
+    }
 
-    async generateRefreshToken(): Promise<string> {}
+    async generateRefreshToken(payload: { user_no: string | number; email: string }): Promise<string> {
+        return this.jwtService.signAsync(
+            { user_no: payload.user_no, email: payload.email },
+            {
+                secret: process.env.AUTH_REFRESH_KEY,
+                expiresIn: process.env.AUTH_REFRESH_EXPIRATION_TIME
+            }
+        );
+    }
 
-    async verifyPayload(): Promise<{[keys]: string, values:}> {}
+    async verifyAccessToken(accessToken: string): Promise<{ email: string }> {
+        return this.jwtService.verify(accessToken, {
+            secret: process.env.AUTH_ACCESS_KEY
+        });
+    }
+
+    async verifyRefreshToken(refreshToken: string): Promise<{ user_no: string; email: string }> {
+        return this.jwtService.verify(refreshToken, {
+            secret: process.env.AUTH_REFRESH_KEY
+        });
+    }
 }
-
-/**
- * @todo
- * 토큰 발급하는부분 중복처리 좀 줄이려면 서비스 만들어서 모듈에 내보내면 좀 깔끔할듯.
- * 기존 jwtService -> authService 대체해서 사용하고 jwtService는 여기에다가 사용하는 것 어떤가?
- */

@@ -37,3 +37,20 @@ export const match = <T, V>(a: T): Match<T, V> => {
         done: (fn: (a: T) => V) => fn(a)
     };
 };
+
+// rxjs의 pipe 활용, 하지만 해당 함수에서는 불필요하다 생각되어 기존 방식으로 롤백
+// import { forkJoin, from, mergeMap, of } from 'rxjs';
+// const [payload, redisRefreshToken] = await Promise.all([
+//     await this.authService.verifyRefreshToken(refreshToken),
+//     await this.redisService.getRedis(payload.user_no)
+// ]);
+
+// const result = from(this.authService.verifyRefreshToken(refreshToken)).pipe(
+//     mergeMap((payload) => forkJoin([of(payload), from(this.redisService.getRedis(payload.user_no))]))
+// );
+// result.subscribe(([payload, redisRefreshToken]) => {
+//     if (!redisRefreshToken || refreshToken !== redisRefreshToken) {
+//         this.redisService.deleteRedis(payload.user_no);
+//         throw new UnauthorizedException('Invalid authentication. Please log in again.');
+//     }
+// });
