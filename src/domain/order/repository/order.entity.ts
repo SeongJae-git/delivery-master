@@ -11,17 +11,20 @@ export class OrderEntity {
     @Column()
     order_time: string;
 
-    @Column()
+    @Column({ default: 'requesting' })
     order_status: string;
 
     @Column()
+    orderby: number;
+
+    @Column()
+    seller: number;
+
+    @Column({ nullable: true })
     receipt_time: string;
 
     @Column()
     product_no: number;
-
-    @Column()
-    orderby: number;
 
     @Column()
     destination: string;

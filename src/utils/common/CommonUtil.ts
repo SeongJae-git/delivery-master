@@ -17,7 +17,7 @@ export class CommonUtil {
         return timeString;
     }
 
-    static UUIDGenerator() {
+    static generateUUID() {
         // v4방식의 uuid 생성, 버전표기와 변형자리 그냥 지우고 올랜덤으로 씀
         return 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'.replace(/[x]/g, function (c) {
             const r = (Math.random() * 16) | 0,
