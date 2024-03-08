@@ -1,25 +1,25 @@
-import { IsDateString, IsNotEmpty, IsNumberString, IsOptional, IsString, IsUUID } from 'class-validator';
+import { IsDateString, IsNotEmpty, IsNumber, IsOptional, IsString, IsUUID } from 'class-validator';
 
 export class CreateOrderDTO {
     // 입력 필수값
     @IsNotEmpty()
-    @IsNumberString()
+    @IsNumber()
     product_no: number;
 
     @IsNotEmpty()
-    @IsNumberString()
+    @IsNumber()
     orderby: number;
 
     @IsNotEmpty()
-    @IsNumberString()
+    @IsNumber()
     seller: number;
 
     @IsNotEmpty()
     @IsString()
     destination: string;
 
-    // 나머지 서버의 서비스단에서 설정해주는 값
-    // 근데 입력을 받을 수는 있게 옵셔널 설정
+    // 나머지 서버의 서비스단에서 설정해주는 값이기에 필수값이 아님
+    // 하지만 입력을 받을 수는 있게 옵셔널 설정
     @IsOptional()
     @IsUUID()
     order_uuid?: string;

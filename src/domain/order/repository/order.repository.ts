@@ -12,8 +12,12 @@ export class OrderRepository {
     ) {}
 
     async create(createOrderDTO: CreateOrderDTO) {
-        return this.orderRepository.insert(createOrderDTO);
-        // return this.orderRepository.create(createOrderDTO);
+        const { orderby, ...rest } = createOrderDTO;
+        const orderEntity = this.orderRepository.create({
+            ...rest,
+            orderby: { user_no: orderby }
+        });
+        return this.orderRepository.save(orderEntity);
     }
 
     async findOrderByOrderNo(order_no: number) {

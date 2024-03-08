@@ -12,7 +12,7 @@ async function bootstrap() {
     const port = process.env.PORT;
 
     // App use setting
-    app.useGlobalInterceptors(new ErrorAlertInterceptor());
+    // app.useGlobalInterceptors(new ErrorAlertInterceptor());
     app.use(cookieParser());
     app.useGlobalPipes(
         // DTO의 class-validation을 위해 글로벌 파이프 설정

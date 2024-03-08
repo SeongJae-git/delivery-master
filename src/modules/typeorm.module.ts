@@ -13,7 +13,8 @@ import { UserEntity } from 'src/domain/user/repository/user.entity';
             password: process.env.DB_PASSWORD,
             database: process.env.DB_DATABASE,
             entities: [UserEntity, OrderEntity], // entities: [__dirname + '/**/*.entity{.ts,.js}'],
-            synchronize: true
+            synchronize: true,
+            logging: true
         })
     ]
 })

@@ -13,7 +13,9 @@ export class UserRepository {
     ) {}
 
     async insertUser(signUpUserDTO: SignUpUserDTO): Promise<void> {
-        this.userRepository.insert(signUpUserDTO);
+        const userEntity = this.userRepository.create(signUpUserDTO);
+
+        this.userRepository.save(userEntity);
     }
 
     async findUserByUserNo(user_no: number) {
