@@ -5,10 +5,11 @@ import { SignUpUserDTO } from '../dto/signup.user.dto';
 
 import { Request, Response } from 'express';
 import { JwtRefreshGuard } from 'src/middleware/auth/guard/auth.jwt.refresh';
-import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBadRequestResponse, ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 @Controller('/user')
 @ApiTags('User API')
+@ApiBadRequestResponse({ description: '잘못된 파라미터 값이 존재합니다.' })
 export class UserController {
     constructor(private readonly userService: UserService) {}
 
@@ -22,7 +23,6 @@ export class UserController {
     })
     @ApiBody({ type: SignUpUserDTO })
     @ApiResponse({ status: 201, description: '성공적으로 계정을 생성하였습니다.' })
-    @ApiResponse({ status: 400, description: '필수 요청값이 누락되었습니다.' })
     @ApiResponse({ status: 401, description: '이미 존재하는 계정입니다.' })
     signUpUser(@Body() signUpUserDTO: SignUpUserDTO): Promise<void> {
         return this.userService.signUpUser(signUpUserDTO);
@@ -44,7 +44,6 @@ export class UserController {
     })
     @ApiBody({ type: SignInUserDTO })
     @ApiResponse({ status: 201, description: '로그인에 성공하여 각 토큰이 httponly 속성으로 쿠키에 등록되었습니다.' })
-    @ApiResponse({ status: 400, description: '필수 요청값이 누락되었습니다.' })
     @ApiResponse({ status: 401, description: '존재하지 않는 계정입니다.' })
     async signInUser(@Body() signInUserDTO: SignInUserDTO, @Res({ passthrough: true }) res: Response) {
         const result = await this.userService.signInUser(signInUserDTO);
@@ -55,7 +54,8 @@ export class UserController {
         return {
             message: 'All tokens have been successfully registered in cookies!',
             name: result.name,
-            email: result.email
+            email: result.email,
+            accessToken: result.accessToken
         };
     }
 

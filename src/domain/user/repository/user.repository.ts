@@ -3,7 +3,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from './user.entity';
 import { Repository } from 'typeorm';
 import { SignUpUserDTO } from '../dto/signup.user.dto';
-import { SignInUserDTO } from '../dto/signin.user.dto';
 
 @Injectable()
 export class UserRepository {
@@ -26,16 +25,8 @@ export class UserRepository {
 
     async findUserByEmail(email: string) {
         return this.userRepository.findOne({
-            where: { email: email }
-        });
-    }
-
-    async findUserByLogin(signInUserDTO: SignInUserDTO) {
-        return this.userRepository.findOne({
-            where: {
-                email: signInUserDTO.email,
-                password: signInUserDTO.password
-            }
+            where: { email: email },
+            select: ['user_no', 'email', 'name', 'password']
         });
     }
 

@@ -17,7 +17,16 @@ export class OrderRepository {
             ...rest,
             orderby: { user_no: orderby }
         });
+
         return this.orderRepository.save(orderEntity);
+    }
+
+    async findOrderListBySeller(seller: number, order_status?: string) {
+        return this.orderRepository.find({
+            where: { seller: seller, order_status: order_status },
+            relations: ['orderby'],
+            select: ['orderby']
+        });
     }
 
     async findOrderByOrderNo(order_no: number) {
@@ -32,14 +41,11 @@ export class OrderRepository {
         });
     }
 
-    async findOrderListBySeller(seller: number) {
-        return this.orderRepository.find({
-            where: { seller: seller }
-        });
-    }
+    async updateStatusByUUID(order_uuid: string, order_status: string) {
+        const orderEntity = await this.orderRepository.findOne({ where: { order_uuid: order_uuid } });
 
-    async update(updateOrderDTO: any) {
-        // dto 마저 만들어서 바꿔야함
-        return this.orderRepository.save(updateOrderDTO);
+        orderEntity.order_status = order_status;
+
+        return this.orderRepository.save(orderEntity);
     }
 }

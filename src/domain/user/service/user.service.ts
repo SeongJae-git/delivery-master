@@ -4,6 +4,7 @@ import { SignInUserDTO } from '../dto/signin.user.dto';
 import { UserRepository } from '../repository/user.repository';
 import { RedisService } from 'src/middleware/redis/redis.service';
 import { AuthService } from 'src/middleware/auth/service/auth.service';
+import { CommonUtil } from 'src/utils/common/CommonUtil';
 
 @Injectable()
 export class UserService {
@@ -17,16 +18,22 @@ export class UserService {
         const user = await this.userRepository.findUserByEmail(signUpUserDTO.email);
 
         if (!user) {
-            await this.userRepository.insertUser(signUpUserDTO);
+            const signUpDataSet = Object.assign({
+                ...signUpUserDTO,
+                password: await CommonUtil.generateHash(signUpUserDTO.password)
+            });
+
+            await this.userRepository.insertUser(signUpDataSet);
         } else {
             throw new UnauthorizedException(`${signUpUserDTO.email} is already exist.`);
         }
     }
 
     async signInUser(signInUserDTO: SignInUserDTO) {
-        const user = await this.userRepository.findUserByLogin(signInUserDTO);
+        const user = await this.userRepository.findUserByEmail(signInUserDTO.email);
+        const auth = await CommonUtil.compareHash(signInUserDTO.password, user.password);
 
-        if (!user) {
+        if (!user || !auth) {
             throw new UnauthorizedException(`Account doesn't exist.`);
         }
 

@@ -13,8 +13,8 @@ import { UserEntity } from 'src/domain/user/repository/user.entity';
             password: process.env.DB_PASSWORD,
             database: process.env.DB_DATABASE,
             entities: [UserEntity, OrderEntity], // entities: [__dirname + '/**/*.entity{.ts,.js}'],
-            synchronize: true,
-            logging: true
+            synchronize: true, // 재시작 시 항상 테이블 구조 등 동기화, Production에서는 false 권장
+            logging: false // 콘솔에 실행되는 쿼리문 출력 등 DB로킹
         })
     ]
 })

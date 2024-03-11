@@ -27,7 +27,7 @@ export class OrderEntity {
     @Column()
     destination: string;
 
-    @ManyToOne(() => UserEntity, (user) => user.orders, { nullable: false })
+    @ManyToOne(() => UserEntity, (user) => user, { nullable: false })
     @JoinColumn({ name: 'orderby' })
     orderby: UserEntity;
 }

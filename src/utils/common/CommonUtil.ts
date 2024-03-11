@@ -1,7 +1,9 @@
+import * as bcrypt from 'bcrypt';
+
 export class CommonUtil {
     constructor() {}
 
-    static getCurrentTime() {
+    static getCurrentTime(): string {
         const now = new Date();
 
         const year = now.getFullYear();
@@ -17,12 +19,20 @@ export class CommonUtil {
         return timeString;
     }
 
-    static generateUUID() {
+    static generateUUID(): string {
         // v4방식의 uuid 생성, 버전표기와 변형자리 그냥 지우고 올랜덤으로 씀
         return 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'.replace(/[x]/g, function (c) {
             const r = (Math.random() * 16) | 0,
                 v = c == 'x' ? r : (r & 0x3) | 0x8;
             return v.toString(16);
         });
+    }
+
+    static generateHash(value: string): Promise<string> {
+        return bcrypt.hash(value, 10);
+    }
+
+    static compareHash(value: string, target: string): Promise<boolean> {
+        return bcrypt.compare(value, target);
     }
 }
