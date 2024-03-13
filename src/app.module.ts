@@ -6,9 +6,10 @@ import { ConfigModule } from './modules/config.module';
 import { TypeOrmModule } from './modules/typeorm.module';
 import { RedisModule } from './modules/redis.module';
 import { OrderModule } from './modules/domain/domain.order.module';
+import { ProductModule } from './modules/domain/domain.product.module';
 
 @Module({
-    imports: [ConfigModule, TypeOrmModule, AuthModule, RedisModule, UserModule, OrderModule],
+    imports: [ConfigModule, TypeOrmModule, AuthModule, RedisModule, UserModule, OrderModule, ProductModule],
     controllers: [],
     providers: []
 })

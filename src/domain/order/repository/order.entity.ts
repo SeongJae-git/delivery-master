@@ -15,9 +15,6 @@ export class OrderEntity {
     @Column({ default: 'requesting' })
     order_status: string;
 
-    @Column()
-    seller: number;
-
     @Column({ nullable: true })
     receipt_time: Date;
 
@@ -27,7 +24,11 @@ export class OrderEntity {
     @Column()
     destination: string;
 
-    @ManyToOne(() => UserEntity, (user) => user, { nullable: false })
-    @JoinColumn({ name: 'orderby' })
+    @ManyToOne(() => UserEntity, { nullable: false })
+    @JoinColumn({ name: 'seller', referencedColumnName: 'user_no' })
+    seller: UserEntity;
+
+    @ManyToOne(() => UserEntity, { nullable: false })
+    @JoinColumn({ name: 'orderby', referencedColumnName: 'user_no' })
     orderby: UserEntity;
 }

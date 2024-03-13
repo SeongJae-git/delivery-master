@@ -24,5 +24,5 @@ export class UserEntity {
     point: number;
 
     @Column({ default: false, select: false })
-    seller: boolean;
+    sellable: boolean;
 }

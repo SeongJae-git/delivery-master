@@ -31,9 +31,8 @@ export class UserService {
 
     async signInUser(signInUserDTO: SignInUserDTO) {
         const user = await this.userRepository.findUserByEmail(signInUserDTO.email);
-        const auth = await CommonUtil.compareHash(signInUserDTO.password, user.password);
 
-        if (!user || !auth) {
+        if (!user || !(await CommonUtil.compareHash(signInUserDTO.password, user.password))) {
             throw new UnauthorizedException(`Account doesn't exist.`);
         }
 

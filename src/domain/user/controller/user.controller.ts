@@ -9,7 +9,7 @@ import { ApiBadRequestResponse, ApiBody, ApiOperation, ApiResponse, ApiTags } fr
 
 @Controller('/user')
 @ApiTags('User API')
-@ApiBadRequestResponse({ description: '잘못된 파라미터 값이 존재합니다.' })
+@ApiBadRequestResponse({ description: '올바르지 않은 파라미터(Query, Body, Param) 값이 존재합니다.' })
 export class UserController {
     constructor(private readonly userService: UserService) {}
 
@@ -28,10 +28,10 @@ export class UserController {
         return this.userService.signUpUser(signUpUserDTO);
     }
 
-    ///////////////////////
-    // GET   - /user/me 유저 정보수정 들어가야함
-    // PATCH - /user/me 유저 정보확인(내정보확인) 들어가야함
-    ///////////////////////
+    /////////////////////////////////////////////////////////
+    // GET   - /user/me 유저 정보수정 들어가야함             //
+    // PATCH - /user/me 유저 정보확인(내정보확인) 들어가야함  //
+    /////////////////////////////////////////////////////////
 
     /**
      * SignInUserDTO 클래스를 파라미터로 받아 DB에 정보가 있는 유저의 로그인 처리를 하는 라우터로 사용하도록 한다.

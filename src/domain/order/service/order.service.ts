@@ -24,7 +24,7 @@ export class OrderService {
     }
 
     async listOrders(seller: number, order_status: string) {
-        if (Number.isNaN(seller)) {
+        if (!seller || Number.isNaN(seller)) {
             throw new BadRequestException('Invalid seller value');
         }
         if (order_status !== undefined && !this.orderStatusList.includes(order_status)) {

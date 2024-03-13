@@ -22,11 +22,6 @@ async function bootstrap() {
         })
     );
 
-    app.enableCors({
-        credentials: true,
-        origin: true
-    });
-
     // App Init Process
     setupSwagger(app);
     Sentry.init({ dsn: process.env.SENTRY_DSN_URL });
