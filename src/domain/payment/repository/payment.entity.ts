@@ -7,21 +7,27 @@ export class PaymentEntity {
     payment_no: number;
 
     @Column()
-    name: string;
+    name: string; // 김철수
 
     @Column()
-    method: string;
+    method: string; // 무통장입금, 실시간계좌이체, 카드결제, 가상계좌, 간편결제
 
     @Column()
-    amount: number;
+    provider: string; // 국민은행, 카카오뱅크, 토스
 
     @Column()
-    paymentTime: string;
+    amount: number; // 9000
 
     @Column()
-    approval: string;
+    payment_time: string; // 2024-03-14
+
+    @Column()
+    status: string; // approved, rejected, waiting, requesting
+
+    @Column()
+    payment_uuid: string;
 
     @OneToOne(() => OrderEntity, { nullable: false })
-    @JoinColumn({ name: 'orderUUID' })
-    orderUUID: OrderEntity;
+    @JoinColumn({ name: 'order_uuid' })
+    order_uuid: OrderEntity;
 }

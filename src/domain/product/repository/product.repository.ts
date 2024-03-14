@@ -22,13 +22,13 @@ export class ProductRepository {
         return this.productRepository.save(productEntity);
     }
 
-    async listProducts(seller: number) {
+    async listProductsBySeller(seller: number) {
         return this.productRepository.find({
             where: { seller: { user_no: seller } }
         });
     }
 
-    async detailProduct(product_no: number) {
+    async detailProductByProductNo(product_no: number) {
         const productEntity = await this.productRepository.findOne({
             where: { product_no: product_no }
         });
@@ -40,7 +40,7 @@ export class ProductRepository {
         return productEntity;
     }
 
-    async updateProduct(product_no: number, updateProductDTO: UpdateProductDTO) {
+    async updateProductByProductNo(product_no: number, updateProductDTO: UpdateProductDTO) {
         const productEntity = await this.productRepository.findOne({
             where: { product_no: product_no }
         });
@@ -55,7 +55,7 @@ export class ProductRepository {
         return this.productRepository.save(productEntity);
     }
 
-    async deleteProduct(product_no: number) {
+    async deleteProductByProductNo(product_no: number) {
         const productEntity = await this.productRepository.findOne({
             where: { product_no: product_no }
         });

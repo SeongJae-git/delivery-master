@@ -12,18 +12,18 @@ export class ProductService {
     }
 
     async listProducts(seller: number) {
-        return await this.productRepository.listProducts(seller);
+        return await this.productRepository.listProductsBySeller(seller);
     }
 
     async detailProduct(product_no: number) {
-        return await this.productRepository.detailProduct(product_no);
+        return await this.productRepository.detailProductByProductNo(product_no);
     }
 
     async updateProduct(product_no: number, updateProductDTO: UpdateProductDTO) {
-        return await this.productRepository.updateProduct(product_no, updateProductDTO);
+        return await this.productRepository.updateProductByProductNo(product_no, updateProductDTO);
     }
 
     async deleteProduct(product_no: number) {
-        return await this.productRepository.deleteProduct(product_no);
+        return await this.productRepository.deleteProductByProductNo(product_no);
     }
 }
