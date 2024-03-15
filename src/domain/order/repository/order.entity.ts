@@ -1,12 +1,9 @@
 import { UserEntity } from 'src/domain/user/repository/user.entity';
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
 
 @Entity('orders')
 export class OrderEntity {
-    @PrimaryGeneratedColumn()
-    order_no: number;
-
-    @Column({ unique: true })
+    @PrimaryColumn({ unique: true })
     order_uuid: string;
 
     @Column()

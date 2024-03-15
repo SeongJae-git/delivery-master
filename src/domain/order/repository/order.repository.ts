@@ -35,12 +35,6 @@ export class OrderRepository {
         }));
     }
 
-    async findOrderByOrderNo(order_no: number) {
-        return this.orderRepository.findOne({
-            where: { order_no: order_no }
-        });
-    }
-
     async findOrderByOrderUUID(order_uuid: string) {
         return this.orderRepository.findOne({
             where: { order_uuid: order_uuid }

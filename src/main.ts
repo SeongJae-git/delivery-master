@@ -12,7 +12,7 @@ async function bootstrap() {
     const port = process.env.PORT;
 
     // App use setting
-    // app.useGlobalInterceptors(new ErrorAlertInterceptor());
+    app.useGlobalInterceptors(new ErrorAlertInterceptor());
     app.use(cookieParser());
     app.useGlobalPipes(
         // DTO의 class-validation을 위해 글로벌 파이프 설정
@@ -30,9 +30,3 @@ async function bootstrap() {
     await app.listen(port);
 }
 bootstrap();
-
-/**
- * @TODO helmet 모듈 넣어볼것
- * @TODO morgan 모듈 넣어볼것 + nestjs 내장모듈 윈스턴 logger 써볼것
- * @TODO lodash 개념 확인해볼 것
- */

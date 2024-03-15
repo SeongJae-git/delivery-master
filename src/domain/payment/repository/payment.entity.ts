@@ -1,10 +1,10 @@
 import { OrderEntity } from 'src/domain/order/repository/order.entity';
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
 
 @Entity('payments')
 export class PaymentEntity {
-    @PrimaryGeneratedColumn()
-    payment_no: number;
+    @PrimaryColumn({ unique: true })
+    payment_uuid: string;
 
     @Column()
     name: string; // 김철수
@@ -23,9 +23,6 @@ export class PaymentEntity {
 
     @Column()
     status: string; // approved, rejected, waiting, requesting
-
-    @Column()
-    payment_uuid: string;
 
     @ManyToOne(() => OrderEntity, { nullable: false })
     @JoinColumn({ name: 'order_uuid', referencedColumnName: 'order_uuid' })
