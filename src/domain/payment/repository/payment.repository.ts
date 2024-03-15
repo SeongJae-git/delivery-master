@@ -16,7 +16,7 @@ export class PaymentRepository {
         const paymentEntity = this.paymentRepository.create({
             order_uuid: { order_uuid: order_uuid },
             ...rest
-        }); // Field 'order_uuid' doesn't have a default value 에러뜸 이거부터 고칠것
+        });
 
         console.log(paymentEntity);
 

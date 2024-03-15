@@ -1,5 +1,5 @@
 import { OrderEntity } from 'src/domain/order/repository/order.entity';
-import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('payments')
 export class PaymentEntity {
@@ -27,7 +27,7 @@ export class PaymentEntity {
     @Column()
     payment_uuid: string;
 
-    @OneToOne(() => OrderEntity, { nullable: false })
-    @JoinColumn({ name: 'order_uuid' })
+    @ManyToOne(() => OrderEntity, { nullable: false })
+    @JoinColumn({ name: 'order_uuid', referencedColumnName: 'order_uuid' })
     order_uuid: OrderEntity;
 }
