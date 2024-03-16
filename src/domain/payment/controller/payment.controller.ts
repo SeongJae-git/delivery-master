@@ -26,7 +26,7 @@ export class PaymentController {
     @Post('/')
     @ApiOperation({
         summary: '결제정보 생성',
-        description: '수신한 JSON데이터를 바탕으로 새 결제정보를 생성합니다.'
+        description: '받아온 JSON데이터를 바탕으로 새 결제정보를 생성합니다.'
     })
     @ApiBody({ type: CreatePaymentDTO })
     @ApiResponse({ status: 201, description: '성공적으로 새 결제정보를 생성하였습니다.' })
