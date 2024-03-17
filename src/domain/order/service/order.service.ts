@@ -2,20 +2,28 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateOrderDTO } from '../dto/create.order.dto';
 import { OrderRepository } from '../repository/order.repository';
 import { CommonUtil } from 'src/utils/common/CommonUtil';
+import { UserRepository } from 'src/domain/user/repository/user.repository';
+import { PaymentRepository } from 'src/domain/payment/repository/payment.repository';
 
 @Injectable()
 export class OrderService {
-    constructor(private readonly orderRepository: OrderRepository) {}
+    constructor(
+        private readonly orderRepository: OrderRepository,
+        private readonly userRepository: UserRepository,
+        private readonly paymentRepository: PaymentRepository
+        ) {}
 
     private orderStatusList = ['requesting', 'denied', 'accept', 'cancel'];
-
+ß
     async createOrder(createOrderDTO: CreateOrderDTO) {
         try {
             const createDataSet = Object.assign(createOrderDTO, {
                 ...createOrderDTO,
                 order_uuid: CommonUtil.generateUUID(),
                 order_time: CommonUtil.getCurrentTime()
-            });
+            });ßßß
+
+            this.userRepository.updateAfterOrderByUserNo(createOrderDTO.orderby, 1, await this.paymentRepository.?);
 
             return await this.orderRepository.create(createDataSet);
         } catch (e) {
