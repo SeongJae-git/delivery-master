@@ -8,6 +8,11 @@ export class CreateOrderDTO {
     @IsNumber()
     product_no: number;
 
+    @ApiProperty({ description: '총 금액', example: 9000 })
+    @IsNotEmpty()
+    @IsNumber()
+    price: number;
+
     @ApiProperty({ description: '주문자 번호', example: 1 })
     @IsNotEmpty()
     @IsNumber()

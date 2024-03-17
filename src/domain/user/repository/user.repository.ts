@@ -30,7 +30,7 @@ export class UserRepository {
         });
     }
 
-    async updateAfterOrderByUserNo(user_no: number, count: number, point: number) {
+    async updateAfterOrderByUserNo(user_no: number, point: number, count: number) {
         const userEntity = await this.userRepository.findOne({
             where: {user_no: user_no}
         });
@@ -46,6 +46,10 @@ export class UserRepository {
 
         // 저장
         this.userRepository.save(userEntity);
+
+        /**
+         * @todo GPT 질문해둔 것 참고해서 트랜잭션 거는 것?
+         */
     }
 
     async updateUser() {}

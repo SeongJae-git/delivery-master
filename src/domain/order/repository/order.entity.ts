@@ -19,6 +19,9 @@ export class OrderEntity {
     product_no: number;
 
     @Column()
+    price: number;
+
+    @Column()
     destination: string;
 
     @ManyToOne(() => UserEntity, { nullable: false })

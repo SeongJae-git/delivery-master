@@ -21,9 +21,9 @@ export class OrderService {
                 ...createOrderDTO,
                 order_uuid: CommonUtil.generateUUID(),
                 order_time: CommonUtil.getCurrentTime()
-            });ßßß
+            });
 
-            this.userRepository.updateAfterOrderByUserNo(createOrderDTO.orderby, 1, await this.paymentRepository.?);
+            this.userRepository.updateAfterOrderByUserNo(createOrderDTO.orderby, (createOrderDTO.price * 0.1), 1);
 
             return await this.orderRepository.create(createDataSet);
         } catch (e) {
