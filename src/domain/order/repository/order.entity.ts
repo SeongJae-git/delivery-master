@@ -1,5 +1,6 @@
+import { PaymentEntity } from 'src/domain/payment/repository/payment.entity';
 import { UserEntity } from 'src/domain/user/repository/user.entity';
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryColumn } from 'typeorm';
 
 @Entity('orders')
 export class OrderEntity {
@@ -31,4 +32,7 @@ export class OrderEntity {
     @ManyToOne(() => UserEntity, { nullable: false })
     @JoinColumn({ name: 'orderby', referencedColumnName: 'user_no' })
     orderby: UserEntity;
+
+    @OneToMany(() => PaymentEntity, (payments) => payments)
+    payments: PaymentEntity[];
 }

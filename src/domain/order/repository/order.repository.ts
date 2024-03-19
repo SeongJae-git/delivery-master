@@ -36,9 +36,17 @@ export class OrderRepository {
     }
 
     async findOrderByOrderUUID(order_uuid: string) {
-        return this.orderRepository.findOne({
-            where: { order_uuid: order_uuid }
-        });
+        const orderDetails = await this.orderRepository
+            .createQueryBuilder('orders')
+            .leftJoinAndSelect('orders.payments', 'payment')
+            .where('order.order_uuid = :order_uuid', { order_uuid })
+            .select(['orders', 'payment.method'])
+            .getOne();
+
+        return orderDetails;
+        // return this.orderRepository.findOne({
+        //     where: { order_uuid: order_uuid }
+        // });
     }
 
     async updateStatusByUUID(order_uuid: string, order_status: string) {
