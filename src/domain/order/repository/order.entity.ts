@@ -33,6 +33,6 @@ export class OrderEntity {
     @JoinColumn({ name: 'orderby', referencedColumnName: 'user_no' })
     orderby: UserEntity;
 
-    @OneToMany(() => PaymentEntity, (payments) => payments)
+    @OneToMany(() => PaymentEntity, (payment) => payment.order)
     payments: PaymentEntity[];
 }

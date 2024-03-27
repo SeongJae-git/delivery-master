@@ -8,22 +8,22 @@ export class ProductService {
     constructor(private readonly productRepository: ProductRepository) {}
 
     async createProduct(createProductDTO: CreateProductDTO) {
-        return await this.productRepository.createProduct(createProductDTO);
+        return this.productRepository.createProduct(createProductDTO);
     }
 
     async listProducts(seller: number) {
-        return await this.productRepository.listProductsBySeller(seller);
+        return this.productRepository.listProductsBySeller(seller);
     }
 
     async detailProduct(product_no: number) {
-        return await this.productRepository.detailProductByProductNo(product_no);
+        return this.productRepository.detailProductByProductNo(product_no);
     }
 
     async updateProduct(product_no: number, updateProductDTO: UpdateProductDTO) {
-        return await this.productRepository.updateProductByProductNo(product_no, updateProductDTO);
+        return this.productRepository.updateProductByProductNo(product_no, updateProductDTO);
     }
 
     async deleteProduct(product_no: number) {
-        return await this.productRepository.deleteProductByProductNo(product_no);
+        return this.productRepository.deleteProductByProductNo(product_no);
     }
 }

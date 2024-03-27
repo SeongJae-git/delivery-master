@@ -35,18 +35,18 @@ export class OrderRepository {
         }));
     }
 
+    /**
+     * @todo 기준점이 되는 테이블 바꿀 것
+     */
     async findOrderByOrderUUID(order_uuid: string) {
         const orderDetails = await this.orderRepository
             .createQueryBuilder('orders')
-            .leftJoinAndSelect('orders.payments', 'payment')
-            .where('order.order_uuid = :order_uuid', { order_uuid })
-            .select(['orders', 'payment.method'])
+            .leftJoinAndSelect('orders.payments', 'payments')
+            .where('orders.order_uuid=:order_uuid', { order_uuid })
+            .select(['orders.order_uuid', 'payments'])
             .getOne();
 
         return orderDetails;
-        // return this.orderRepository.findOne({
-        //     where: { order_uuid: order_uuid }
-        // });
     }
 
     async updateStatusByUUID(order_uuid: string, order_status: string) {

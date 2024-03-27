@@ -9,6 +9,12 @@ export class JWTAccessGuard extends AuthGuard('access') {
         return super.canActivate(context);
     }
     handleRequest<TUser = any>(err: any, user: any, info: any, context: ExecutionContext, status?: any): TUser {
+        // switch(info) {
+        //     case TokenExpiredError:
+        // }
+        /**
+         * @todo 스위치 안에 타입 받아 넣고 인스턴스 비교해서 맞는에러 떤져주기
+         */
         if (info instanceof TokenExpiredError) {
             throw new UnauthorizedException('Access authentication has expired.');
         } else if (info instanceof JsonWebTokenError) {

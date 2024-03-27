@@ -8,6 +8,10 @@ import { PaymentRepository } from 'src/domain/payment/repository/payment.reposit
 @Injectable()
 export class OrderService {
     constructor(
+        /**
+         * @todo
+         * 순환참조, 흐름역행되는것 생각해서 주입
+         */
         private readonly orderRepository: OrderRepository,
         private readonly userRepository: UserRepository,
         private readonly paymentRepository: PaymentRepository
@@ -23,15 +27,7 @@ export class OrderService {
                 order_time: CommonUtil.getCurrentTime()
             });
 
-            /**
-             * 주문을 함 -> Transaction[ (orders 테이블)주문 생성 -> (payments)결제 생성 ]
-             * 결제완료 -> Transaction[ (payments 테이블) 결제정보 업데이트 -> (users 테이블)주문횟수+1, 포인트+5% ]
-             * 결제완료 시 가게에 주문정보 전달
-             *
-             * 추가로 필요할 것 같은것들
-             * payments 결제 생성시간(createdAt)?
-             */
-
+            // 이건 주문 입금 다 완료 되었을떄로 옮겨야함
             this.userRepository.updateAfterOrderByUserNo(createOrderDTO.orderby, createOrderDTO.price * 0.1, 1);
 
             return await this.orderRepository.create(createDataSet);

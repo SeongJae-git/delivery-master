@@ -14,18 +14,16 @@ export class PaymentRepository {
     async createPayment(createPaymentDTO: CreatePaymentDTO) {
         const { order_uuid, ...rest } = createPaymentDTO;
         const paymentEntity = this.paymentRepository.create({
-            order_uuid: { order_uuid: order_uuid },
+            order: { order_uuid: order_uuid },
             ...rest
         });
-
-        console.log(paymentEntity);
 
         return this.paymentRepository.save(paymentEntity);
     }
 
     async detailPaymentByOrderUUID(order_uuid: string) {
         return this.paymentRepository.find({
-            where: { order_uuid: { order_uuid: order_uuid } }
+            where: { order: { order_uuid: order_uuid } }
         });
     }
 

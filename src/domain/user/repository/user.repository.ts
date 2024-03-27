@@ -32,10 +32,10 @@ export class UserRepository {
 
     async updateAfterOrderByUserNo(user_no: number, point: number, count: number) {
         const userEntity = await this.userRepository.findOne({
-            where: {user_no: user_no}
+            where: { user_no: user_no }
         });
-        
-        if(!userEntity) {
+
+        if (!userEntity) {
             throw new NotFoundException('User not found!');
         }
         // user 테이블 해당 유저의 주문횟수 +n

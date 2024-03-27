@@ -1,5 +1,11 @@
 import * as bcrypt from 'bcrypt';
 
+function assertUtil(v: string): asserts v is string {
+    if (typeof v === 'string') {
+        throw TypeError(`${v} must be string !`);
+    }
+}
+
 export class CommonUtil {
     constructor() {}
 
@@ -29,10 +35,18 @@ export class CommonUtil {
     }
 
     static generateHash(value: string): Promise<string> {
-        return bcrypt.hash(value, 10);
+        const SALT_CNT = 10;
+
+        return bcrypt.hash(value, SALT_CNT);
     }
 
-    static compareHash(value: string, target: string): Promise<boolean> {
+    static compareHash<T extends string | Buffer>(value: T, target: string): Promise<boolean> {
+        assertUtil(target);
+        /**
+         * @todo 에러 검증
+         */
+        // assertUtil(value)
+
         return bcrypt.compare(value, target);
     }
 }

@@ -26,6 +26,10 @@ export class AuthService {
     }
 
     async verifyAccessToken(accessToken: string): Promise<{ email: string }> {
+        // assert
+        /**
+         * @todo 토큰 값 검증 assert
+         */
         return this.jwtService.verify(accessToken, {
             secret: process.env.AUTH_ACCESS_KEY
         });

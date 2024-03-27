@@ -26,5 +26,5 @@ export class PaymentEntity {
 
     @ManyToOne(() => OrderEntity, { nullable: false })
     @JoinColumn({ name: 'order_uuid', referencedColumnName: 'order_uuid' })
-    order_uuid: OrderEntity;
+    order: OrderEntity;
 }
