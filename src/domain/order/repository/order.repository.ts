@@ -1,25 +1,37 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
+import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
 import { OrderEntity } from './order.entity';
-import { Repository } from 'typeorm';
+import { DataSource, Repository } from 'typeorm';
 import { CreateOrderDTO } from '../dto/create.order.dto';
 
 @Injectable()
 export class OrderRepository {
     constructor(
         @InjectRepository(OrderEntity)
-        private readonly orderRepository: Repository<OrderEntity>
+        private readonly orderRepository: Repository<OrderEntity>,
+        @InjectDataSource()
+        private readonly dataSource: DataSource
     ) {}
 
     async create(createOrderDTO: CreateOrderDTO) {
-        const { seller, orderby, ...rest } = createOrderDTO;
-        const orderEntity = this.orderRepository.create({
-            seller: { user_no: seller },
-            orderby: { user_no: orderby },
-            ...rest
-        });
+        const queryRunner = this.dataSource.createQueryRunner();
+        await queryRunner.connect();
+        //todo
+        await queryRunner.startTransaction('SERIALIZABLE');
+        try {
+            const { seller, orderby, ...rest } = createOrderDTO;
+            const orderEntity = this.orderRepository.create({
+                seller: { user_no: seller },
+                orderby: { user_no: orderby },
+                ...rest
+            });
 
-        return this.orderRepository.save(orderEntity);
+            return this.orderRepository.save(orderEntity);
+        } catch (e) {
+            await queryRunner.rollbackTransaction();
+        } finally {
+            await queryRunner.release();
+        }
     }
 
     async findOrderListBySeller(seller: number, order_status?: string) {
@@ -36,7 +48,10 @@ export class OrderRepository {
     }
 
     /**
-     * @todo 기준점이 되는 테이블 바꿀 것
+     * todo
+     * OrderEntity에서 OneToMany를 생략한 후 join select를 ManyToOne가 있는
+     * PaymentRepository에서 수행하려 하였지만, 주문 정보를 불러올 때 연관된 결제정보가 필요한 것이지
+     * 결제정보 한 개만 유저에게 보여줄 일은 없다 생각되어 orderRepo에서 join select 진행
      */
     async findOrderByOrderUUID(order_uuid: string) {
         const orderDetails = await this.orderRepository

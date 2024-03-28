@@ -37,6 +37,7 @@ export class CommonUtil {
     }
 
     static compareHash(value: string, target: string): Promise<boolean> {
+        //todo
         ErrorUtil.assertCheck(CheckUtil.isString(value), 'Type mismatch error occurred hashing!');
 
         return bcrypt.compare(value, target);

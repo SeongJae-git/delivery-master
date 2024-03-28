@@ -4,14 +4,12 @@ import { OrderRepository } from '../repository/order.repository';
 import { CommonUtil } from 'src/utils/common/common.util';
 import { UserRepository } from 'src/domain/user/repository/user.repository';
 import { PaymentRepository } from 'src/domain/payment/repository/payment.repository';
+import { ErrorUtil } from 'src/utils/errors/error.util';
+import { CheckUtil } from 'src/utils/common/check.util';
 
 @Injectable()
 export class OrderService {
     constructor(
-        /**
-         * @todo
-         * 순환참조, 흐름역행되는것 생각해서 주입
-         */
         private readonly orderRepository: OrderRepository,
         private readonly userRepository: UserRepository,
         private readonly paymentRepository: PaymentRepository
@@ -37,12 +35,11 @@ export class OrderService {
     }
 
     async listOrders(seller: number, order_status: string) {
-        if (!seller || Number.isNaN(seller)) {
-            throw new BadRequestException('Invalid seller value');
-        }
-        if (order_status !== undefined && !this.orderStatusList.includes(order_status)) {
-            throw new BadRequestException('Invalid order status value');
-        }
+        // todo << 멱등성
+        ErrorUtil.assertCheck(
+            CheckUtil.isNumber(seller) && CheckUtil.isOrderStatus(order_status),
+            `Invalid param value`
+        );
 
         return this.orderRepository.findOrderListBySeller(seller, order_status);
     }

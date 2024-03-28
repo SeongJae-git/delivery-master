@@ -1,5 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { CheckUtil } from 'src/utils/common/check.util';
+import { ErrorUtil } from 'src/utils/errors/error.util';
 
 @Injectable()
 export class AuthService {
@@ -26,16 +28,17 @@ export class AuthService {
     }
 
     async verifyAccessToken(accessToken: string): Promise<{ email: string }> {
-        // assert
-        /**
-         * @todo 토큰 값 검증 assert
-         */
+        // todo
+        ErrorUtil.assertCheck(CheckUtil.isString(accessToken), `Type mismatch! >> verifyAccessToken ${accessToken}`);
+
         return this.jwtService.verify(accessToken, {
             secret: process.env.AUTH_ACCESS_KEY
         });
     }
 
     async verifyRefreshToken(refreshToken: string): Promise<{ user_no: string; email: string }> {
+        ErrorUtil.assertCheck(CheckUtil.isString(refreshToken), `Type mismatch! >> verifyAccessToken ${refreshToken}`);
+
         return this.jwtService.verify(refreshToken, {
             secret: process.env.AUTH_REFRESH_KEY
         });

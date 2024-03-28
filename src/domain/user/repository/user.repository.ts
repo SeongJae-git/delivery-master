@@ -51,8 +51,4 @@ export class UserRepository {
          * @todo GPT 질문해둔 것 참고해서 트랜잭션 거는 것?
          */
     }
-
-    async updateUser() {}
-
-    async deleteUser() {}
 }
