@@ -4,7 +4,7 @@ import { SignInUserDTO } from '../dto/signin.user.dto';
 import { UserRepository } from '../repository/user.repository';
 import { RedisService } from 'src/middleware/redis/redis.service';
 import { AuthService } from 'src/middleware/auth/service/auth.service';
-import { CommonUtil } from 'src/utils/common/CommonUtil';
+import { CommonUtil } from 'src/utils/common/common.util';
 
 @Injectable()
 export class UserService {

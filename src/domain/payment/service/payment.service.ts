@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PaymentRepository } from '../repository/payment.repository';
 import { CreatePaymentDTO } from '../dto/create.payment.dto';
-import { CommonUtil } from 'src/utils/common/CommonUtil';
+import { CommonUtil } from 'src/utils/common/common.util';
 
 @Injectable()
 export class PaymentService {

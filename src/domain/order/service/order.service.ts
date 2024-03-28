@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateOrderDTO } from '../dto/create.order.dto';
 import { OrderRepository } from '../repository/order.repository';
-import { CommonUtil } from 'src/utils/common/CommonUtil';
+import { CommonUtil } from 'src/utils/common/common.util';
 import { UserRepository } from 'src/domain/user/repository/user.repository';
 import { PaymentRepository } from 'src/domain/payment/repository/payment.repository';
 
