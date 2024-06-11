@@ -35,7 +35,6 @@ export class OrderService {
     }
 
     async listOrders(seller: number, order_status: string) {
-        // todo << 멱등성
         ErrorUtil.assertCheck(
             CheckUtil.isNumber(seller) && CheckUtil.isOrderStatus(order_status),
             `Invalid param value`

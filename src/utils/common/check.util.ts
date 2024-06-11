@@ -15,4 +15,3 @@ export class CheckUtil {
         return typeof v === 'number';
     }
 }
-//todo
